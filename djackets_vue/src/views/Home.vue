@@ -40,17 +40,22 @@ export default {
   },
   mounted() {
     this.getLatestProducts()
+
+    document.title = 'Home | Djackets' 
   },
   methods: {
-    getLatestProducts() {
+    async getLatestProducts() {
+      this.$store.commit('setIsLoading', true)
       axios
         .get('/api/v1/latest-products')
         .then(response => {
           this.latestProducts = response.data
         })
+        
         .catch(error => {
           console.log(error)
         })
+      this.$store.commit('setIsLoading', false)
     }
   }
 }
