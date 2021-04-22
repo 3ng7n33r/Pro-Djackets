@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = '^%^frun)*@39oa%wu6pue2z8q_7rl_ipj1$p-0)#0o=r3^m_l*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 STRIPE_SECRET_KEY = 'sk_test_51Igw8aK0pxGhPSe2eZOTAyNnZ3VChIKjNy5o0kw1AU2NgyV96Wuj6V2Fx8rCGMYL00z2PYfNJXiBqizYEAi4xii200RPTVqTbX'
 
@@ -86,12 +87,33 @@ WSGI_APPLICATION = 'djackets_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.getenv('GAE_APPLICATION', None):
+    # Running on production App Engine, so connect to Google Cloud SQL using
+    # the unix socket at /cloudsql/<your-cloudsql-connection string>
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/django-test-311217:europe-west1:djackets',
+            'USER': 'postgres',
+            'PASSWORD': 'Testapi123!',
+            'NAME': 'postgres',
+        }
+    } 
+else:
+    # Running locally so connect to either a local MySQL instance or connect 
+    # to Cloud SQL via the proxy.  To start the proxy via command line: 
+    #    $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306 
+    # See https://cloud.google.com/sql/docs/mysql-connect-proxy
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+            'USER': 'postgres',
+            'PASSWORD': 'Testapi123!',
+            'NAME': 'postgres',
+        }
     }
-}
 
 
 # Password validation
@@ -133,3 +155,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_ROOT = 'static'
