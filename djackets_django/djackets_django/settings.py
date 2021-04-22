@@ -26,7 +26,7 @@ SECRET_KEY = '^%^frun)*@39oa%wu6pue2z8q_7rl_ipj1$p-0)#0o=r3^m_l*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['django-test-311217.ew.r.appspot.com']
 
 STRIPE_SECRET_KEY = 'sk_test_51Igw8aK0pxGhPSe2eZOTAyNnZ3VChIKjNy5o0kw1AU2NgyV96Wuj6V2Fx8rCGMYL00z2PYfNJXiBqizYEAi4xii200RPTVqTbX'
 
@@ -92,7 +92,7 @@ if os.getenv('GAE_APPLICATION', None):
     # the unix socket at /cloudsql/<your-cloudsql-connection string>
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
+            'ENGINE': 'django.db.backends.postgresql',
             'HOST': '/cloudsql/django-test-311217:europe-west1:djackets',
             'USER': 'postgres',
             'PASSWORD': 'Testapi123!',
